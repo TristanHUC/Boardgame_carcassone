@@ -1,0 +1,473 @@
+@startuml LO21_Projet
+
+' Classes
+
+
+class FabriqueMinituile {
+
+    +Minituile* methodeFabrication(const std::string s);
+}
+
+class VueMinituile{
+     +VueMinituile* setNum(int num);
+     +int getNum()
+     -int numero_minituile_
+     -void MiniTuileClicked(VueMinituile*)
+     -void clickedEvent()
+     -void disableButton()
+
+}
+
+class VuePlateau{
+     +VueTuile* getCenter()
+     +void poserTuile(Tuile& tuile, int ligne, int colonne)
+     +VueTuile* getVueTuile(size_t l, size_t c)
+     -Matrice<VueTuile*, Plateau::getTaille(), Plateau::getTaille()> vue_tuiles
+     -QGridLayout* layoutTuiles
+     -void tuileClicked(VueTuile*)
+     -void miniTuileClicked(VueTuile*,VueMinituile*)
+     +void onTuileClicked(VueTuile* vueTuile)
+     +void onMiniTuileClicked(VueTuile* t, VueMinituile* m)
+
+}
+
+
+class QDialog{
+
+
+}
+
+class windowplayers{
++ void accept()
++const Ui::windowplayer* getUi() const
+}
+
+
+class Ui::windowplayer{
+
+}
+
+
+class Ui::MainWindow{
+
+}
+
+class windowextensions{
+
+    -windowextensions* getUi()
+
+}
+
+abstract class QMainWindow{
+
+}
+
+abstract class QPushButton{
+
+}
+
+class VueTuile{
+
+      +void setTuile(Tuile& t);
+      +bool getaTuile()
+      +size_t getposX()
+      +size_t getposY()
+      +QGridLayout* layoutgrille;
+      +vector<VueMinituile*> vue_minituile;
+      +vector<VueMinituile*> les_boutons_n;
+      -size_t posX;
+      -size_t posY;
+      -QVBoxLayout * layout = nullptr;
+      -bool a_tuile = false;
+      -void tuileClicked(VueTuile*);
+      -void miniTuileClicked(VueTuile*,VueMinituile*);
+      -void clickedEvent();
+      -void onMiniTuileClicked
+}
+
+class MainWindow{
+
+    -MainWindow *ui;
+    -QStandardItemModel tableau_joueurs {0, 3};
+    -Tuile* tuile_courante_ = nullptr;
+    -unique_ptr<Partie> partie;
+    -int num_joueur_courant_ = 0;
+    -VueTuile* derniere_vue_tuile_ = nullptr;
+    -bool tuile_posee_=false;
+    -bool pion_pose_=false;
+    -bool pioche_vide_=false;
+    -QWidget* fenetre_fin;
+    -void majNbrePionTableau();
+    -void recuperationAutoPion();
+    +void on_pivoter_clicked();
+    +void on_repiocher_clicked();
+    +void on_vuePlateau_tuileClicked(VueTuile* vueTuile);
+    +void on_bouton_suivant_clicked();
+    +void on_vuePlateau_miniTuileClicked(VueTuile* t,VueMinituile* m);
+    +void creerPartie();
+    +bool unTour();
+    +void tourJoueur(Joueur& j);
+    +bool piocheVide(){return partie_->piochevide();}
+    +void piocher();
+    +void finPartie();
+    +int getnbJoueurs(){return partie_->getnbJoueurs();}
+    +Joueur& getJoueur(int numero){return partie_->getJoueur(numero);}
+
+}
+
+
+abstract class Minituile{
+    'Attributs
+    #Pion_ unique_ptr<Pion>
+    -virtual doPoserPion(Joueur&)=0
+    'Methodes
+    - virtual doRecuperePion(Joueur&)=0
+    -Zone* zone_
+    +Pion* getPion()
+    +setPion(unique_ptr<Pion>)
+    + operator==(Minituile,Mnituile)
+    +bool possedePion()
+    +virtual bool estFermee()
+    +void setZone(Zone& zone)
+    +Zone* getZone()
+    +bool poserPion(Joueur& joueur);
+    +void recupererPion(Joueur& joueur);
+}
+
+abstract class Tuile{
+    'Attributs
+    -array<unique_ptr<Minituile>,13> minituiles
+    -vector<vector<unsigned int>> liens
+    -bool blason
+    -string chemin
+    -int rotation
+    'Methodes
+    +virtual void foo() = 0
+    +get_minituile(unsigned int) : minituile&
+    +const Minituile& get_minituile(unsigned int pos) const
+    +vector<unsigned int> get_liens(unsigned int pos) const
+    +vector<vector<unsigned int>> get_liens() const
+    +void tourner()
+    +void reset()
+    +int getRotations() const
+    +bool possede_blason() const
+    +bool possedeMinituile(const Minituile& m)
+    +int getIndiceMinituile(const Minituile& m)
+    +void affiche() const
+    +const auto& getChemin() const
+    +list<Minituile*> getMinituilesVoisines(const Minituile&) const
+ }
+
+Abstract class Zone{
+
+    'Attributs
+    -vector<minituiles*> minituiles_
+    -size_t nbminituiles
+    -Plateau* plateau
+    'Methodes
+    +Zone& operator+(Minituile&)
+    +Zone& operator+(const Zone&)
+    +size_t getnbminituiles() const
+    +vector<Minituile*> getminituiles()
+    +vector<Minituile*> getminituiles() const
+    +bool estFermée()
+    +vector<Pion*> pionsOccupants()
+    +const Plateau* getPlateau() const
+    +Plateau* getPlateau()
+    +void affiche_zone() const
+    +virtual size_t getScore() const  = 0
+    +bool aPion()
+    +list<Tuile*> getTuile() const
+}
+
+class Zone_Ville{
+    +size_t getScore() const override;
+}
+
+class Zone_Pre{
+    +size_t getScore() const override;
+}
+
+class Zone_Route{
+    +size_t getScore() const override;
+}
+
+class Zone_Abbe{
+    +size_t getScore() const override;
+}
+
+class Zone_non_evaluee{
+    +size_t getScore() const override;
+}
+
+abstract class Pion{
+    'Attributs
+    -unsigned int poids
+    -Joueur* proprietaire_
+    -int numero_
+    'Methodes
+    +unsigned int getPoids() const
+    +virtual string type() = 0
+    +int getNumero()const
+    +void setNumero(int num)
+    +void setPoids(int poids)
+    +Joueur* getProprietaire() const
+    +void setProprietaire(Joueur* joueur)
+
+}
+
+class Joueur{
+    'Attributs
+    -string nom
+    -int numéro
+    -int score
+    -int nbpionrestant
+    -vector<Pion*> pions_
+    +Joueur(nom,numero,nbpions)
+    +getName()
+    +getScore()
+    +getNumero()
+    +getNbPion()
+    +addScore()
+    +retirerPion()
+    +selectionPion()
+
+}
+
+class Plateau{
+    'Attributs
+    -matrice<143x143> table_
+    -vector<Zone*> zones_
+    -static const size_t taille
+    'Methodes
+    +vector<Zone*> getZones() const
+    +poserTuile(Tuile, int, int)
+    +Matrice<Tuile*, taille, taille> getTable() const
+    +void ajouter(Tuile&, size_t ligne, size_t colonne)
+    +bool tuileCompatible(const Tuile&, size_t ligne, size_t colonne)
+    +bool a_tuile(std::size_t ligne, std::size_t colonne) const
+    +bool estentoure(const Minituile& m)
+    +bool possedeVoisine(const Minituile& m)
+    +constexpr static size_t getTaille()
+    +Tuile* getTuile(size_t ligne, size_t colonne)
+    +Tuile* getTuile(const Minituile& m) const
+    +size_t getPosX(const Tuile&) const;
+    +size_t getPosY(const Tuile&) const;
+    +list<Tuile*> getTuilesAdjacentes(const Tuile& t) const
+    +bool estPosable(Tuile &t)
+    +void afficher_zones() const
+    -bool compatibiliteGauche(const Tuile& t, const unsigned int& ligne, const unsigned int& colonne)
+    -bool compatibiliteDroite(const Tuile& t, const unsigned int& ligne, const unsigned int& colonne)
+    -bool compatibiliteBas(const Tuile& t, const unsigned int& ligne, const unsigned int& colonne)
+    -bool compatibiliteHaut(const Tuile& t, const unsigned int& ligne, const unsigned int& colonne)
+    -bool compatibiliteRiviere(const Tuile &t, int ligne, int colonne)
+    -void creationZone(Tuile& t)
+    -void majZone(unsigned int ligne, unsigned int colonne)
+    -void suppressionZone(Zone* z)
+    -Zone* fabriqueZone(vector<Minituile*> minituiles, Plateau &p)
+}
+
+class Partie{
+    'Attributs
+    -list<unique_ptr<Extension>> extensions_
+    -int nb_joueurs_
+    -int nb_pions_partie_
+    -Pioche pioche_
+    -Plateau plateau_
+    -int tour_
+    -vector<Joueur> Joueurs_
+    'Methodes
+    +creerPartie(nbjoueurs, liste_extensions)
+    +decltype(auto) piocher()
+    +decltype(auto) reposer(Tuile* t)
+    +bool piochevide()
+    +auto& getPlateau()
+    +int getnbJoueurs() const
+    +int getTour() const
+    +int getnbPionsPartie() const
+    +void tourSuivant()
+    +Joueur& getJoueur(int num)
+    +const auto& getExtensions() const
+    -vector<Tuile*> melange(vector<Tuile*>& tuiles)
+    -bool possedeExtensionRiviere() const
+    -Tuile_Riviere* getTuileRiviereSource(vector<Tuile*>&) const
+    -Tuile_Riviere* getTuileRiviereLac(vector<Tuile*>&) const
+    -vector<Tuile*> getAllTuileRiviere(vector<Tuile*>&) const
+    -Tuile_Base* getTuileBase0(vector<Tuile*>&) const
+}
+
+
+class Pioche {
+-queue<Tuile*> pioche_
++decltype(auto) nbTuiles() const
++bool vide()
++void reposer(Tuile* tuile)
++Tuile* piocher()
++void ajouterTuiles(const std::vector<Tuile*>& tuiles)
+
+}
+
+abstract class Extension{
++void initialisation(const string& s)
++vector<Tuile*> getTuiles()
+-unique_ptr<Tuile> fabriqueTuile( const array<string, 13>&, const vector<:vector<unsigned int>>&, const string&,
+                         bool blason, bool auberge, bool cathedrale)
+#vector<unique_ptr<Tuile>> tuiles
+- virtual vector<unique_ptr<Pion>> doCreerPions()=0
+}
+
+class Paysans{
+-vector<unique_ptr<Pion>> doCreerPions()
+}
+class Bases{
+-vector<unique_ptr<Pion>> doCreerPions()
+}
+
+class Rivieres{
+-vector<unique_ptr<Pion>> doCreerPions()
+}
+
+class Auberges{
+-vector<unique_ptr<Pion>> doCreerPions()
+
+}
+
+class Abbes{
+
+-vector<unique_ptr<Pion>> doCreerPions()
+}
+
+class Grand{
++string type() override
+}
+class Simple{
++string type() override
+}
+class Abbe{
++string type() override
+}
+
+class Pre{
+    -doPoserPion(Joueur& joueur) override
+    -void doRecupererPion(Joueur& joueur) override
+    - bool estFermee() override
+}
+class Ville{
+    -doPoserPion(Joueur& joueur) override
+    -void doRecupererPion(Joueur& joueur) override
+}
+class Route{
+    -doPoserPion(Joueur& joueur) override
+    -void doRecupererPion(Joueur& joueur) override
+}
+class Riviere{
+    -doPoserPion(Joueur& joueur) override
+    -void doRecupererPion(Joueur& joueur) override
+}
+class Jardin{
+    -doPoserPion(Joueur& joueur) override
+    -void doRecupererPion(Joueur& joueur) override
+    +bool estFermee() override
+}
+class Abbaye{
+    -doPoserPion(Joueur& joueur) override
+    -void doRecupererPion(Joueur& joueur) override
+    +bool estFermee() override
+}
+
+class Tuile_Auberge{
+-bool auberge
+-bool cathedrale
++void foo() override
++bool possede_auberge() const
++bool possede_cathedrale() const
+}
+class Tuile_Abbe{
++void foo() override
+}
+class Tuile_Base{
++void foo() override
+
+}
+class Tuile_Riviere{
++void foo() override
+}
+
+'Relations
+Pioche o--"*" Tuile
+Extension *-- Tuile
+
+Partie *-- "2..4" Joueur
+Partie *-- "1" Plateau
+Extension *-- Pion
+Partie *-- Extension
+
+Tuile *-- "13" Minituile
+Zone"1" o-- "1..*" Minituile
+Minituile"1" o-- "0..1" Pion
+
+Plateau o-- "1..*" Tuile
+Plateau *-- "1..*" Zone
+Partie *-- Pioche
+Joueur o-- Pion
+
+Pion <|-- Grand
+Pion <|-- Simple
+Pion <|-- Abbe
+
+Minituile <|-- Pre
+Minituile <|-- Ville
+Minituile <|-- Route
+Minituile <|-- Riviere
+Minituile <|-- Jardin
+Minituile <|-- Abbaye
+
+Tuile <|-- Tuile_Abbe
+Tuile <|-- Tuile_Auberge
+Tuile <|-- Tuile_Riviere
+Tuile <|-- Tuile_Base
+
+Bases --|> Extension
+Paysans --|> Extension
+Rivieres --|> Extension
+Auberges --|> Extension
+
+Abbes --|> Extension
+
+MainWindow --|> QMainWindow
+MainWindow *-- "1" Partie
+
+VueTuile --|> QPushButton
+VueMinituile --|> QPushButton
+
+VuePlateau --|> QWidget
+
+Ui::MainWindow o-- "1" VueTuile
+Ui::MainWindow *-- "1" VuePlateau
+
+windowextensions --|> QDialog
+
+windowplayers --|> QDialog
+
+VueTuile o-- "13" VueMinituile
+VueTuile *-- "25" VueMinituile
+
+VuePlateau *-- "5329" VueTuile
+
+
+windowplayers *-- "1" Ui::windowplayers
+
+MainWindow *-- "1" Ui::MainWindow
+
+FabriqueMinituile o-- "1" Minituile
+Zone o-- "1" Plateau
+
+Zone_Ville --|> Zone
+
+Zone_Pre --|> Zone
+
+Zone_Route --|> Zone
+
+Zone_Abbe --|> Zone
+
+Zone_non_evaluee --|> Zone

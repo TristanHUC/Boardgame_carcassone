@@ -1,0 +1,42 @@
+@startuml LO21_Projet
+
+class Bases{
+    'Attributs
+    - tuiles_ : vector<Tuile_base*>
+    - Pions : vector<Pion_base*>
+}
+
+class Rivieres{
+    'Attributs
+    tuiles_Rivieres : vector<Tuile_Riviere*> 
+}
+
+class Auberges{
+    'Attributs
+    tuiles_Auberges : vector<Tuile_Auberge*>
+    Grands : vector<Grand*>
+
+}
+
+class Abbes{
+
+   'Attributs
+   tuiles_Abbes : vector<Tuile_Abbe*>
+   Abbes : vector<Abbe*>
+}
+
+class Tuile_Auberge{
+    -auberge : bool
+    -cathedrale : bool
+    +possede_auberge() : bool
+    +possede_cathedrale() : bool
+}
+class Tuile_Abbe{}
+class Tuile_Base{}
+class Tuile_Riviere{}
+
+
+Bases *-- "72" Tuile_Base
+Rivieres *-- "12" Tuile_Riviere
+Abbes *-- "8" Tuile_Abbe
+Auberges *-- "18" Tuile_Auberge
